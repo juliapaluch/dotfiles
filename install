@@ -2,8 +2,11 @@
 set -e
 
 check_install () {
-	if [ ! command -v $1 &> /dev/null ]; then
-		echo "$1 is not installed."
+	echo -n "checking if $1 is installed... "
+	if command -v $1 &> /dev/null ; then
+		echo "✓"
+	else
+		echo "✗"
 		return 1
 	fi
 }
@@ -20,5 +23,8 @@ fi
 check_install tmux
 if [ ! -d ~/.tmux/plugins/tpm ]; then
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
+if [ ! -d ~/.config/tmux ]; then
+	ln -s ${PWD}/tmux ~/.config/tmux
 fi
 
