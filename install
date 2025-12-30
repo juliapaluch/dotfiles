@@ -1,3 +1,24 @@
 #!/usr/bin/env bash
+set -e
 
-ln -s ${PWD}/nvim ~/.config/nvim
+check_install () {
+	if [ ! command -v $1 &> /dev/null ]; then
+		echo "$1 is not installed."
+		return 1
+	fi
+}
+
+check_install git
+
+# neovim
+check_install nvim
+if [ ! -d ~/.config/nvim ]; then
+	ln -s ${PWD}/nvim ~/.config/nvim
+fi
+
+# tmux
+check_install tmux
+if [ ! -d ~/.tmux/plugins/tpm ]; then
+	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
+
