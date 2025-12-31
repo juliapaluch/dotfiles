@@ -36,4 +36,6 @@ if [ ! -d ~/.tmux/plugins/tpm ]; then
 fi
 if [ ! -d ~/.config/tmux ]; then
 	ln -s ${PWD}/tmux ~/.config/tmux
+	echo "don't forget to disable the default ctrl-space binding in MacOS so you can use it as the tmux prefix"
+	echo "System Settings > Keyboard shortcuts > Input Sources - uncheck all"
 fi
