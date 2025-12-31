@@ -18,12 +18,8 @@ return {
 	  "L3MON4D3/LuaSnip",
 	  dependencies = { "rafamadriz/friendly-snippets" },
 	},
-	{
-		'nvim-lualine/lualine.nvim',
-		dependencies = { 'nvim-tree/nvim-web-devicons' }
-	},
 	{"OXY2DEV/markview.nvim", lazy = false},
 	{"nvim-treesitter/nvim-treesitter", branch = 'master', lazy = false, build = ":TSUpdate"},
 	{"rose-pine/neovim", name = "rose-pine"},
-	{"f-person/auto-dark-mode.nvim",},
+	{"f-person/auto-dark-mode.nvim"},
 }

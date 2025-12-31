@@ -1,3 +1,5 @@
+require('statusline')
+
 -- how many columns a tab char takes up
 vim.opt.tabstop = 4
 
@@ -94,10 +96,6 @@ require("nvim-tree").setup({
 	adaptive_size = true,
   },
 })
-
-require("luasnip.loaders.from_vscode").lazy_load()
-
-require('lualine').setup()
 
 local tree = require("nvim-tree.api")
 vim.keymap.set('n', '<leader>b', tree.tree.toggle)
