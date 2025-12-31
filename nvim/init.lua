@@ -33,7 +33,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- assign space as leader key
 vim.g.mapleader = " "
- 
+
 require("lazy").setup({
   spec = { { import = "plugins" },},
   defaults = { lazy = false, version = false, },
@@ -53,6 +53,43 @@ require("auto-dark-mode").setup({
     vim.cmd("colorscheme rose-pine-dawn")
   end,
 })
+
+local cmp = require("cmp")
+local select_opts = {behavior = cmp.SelectBehavior.Select}
+cmp.setup({
+  snippet = {
+    expand = function(args)
+		require('luasnip').lsp_expand(args.body)
+	end,
+  },
+  window = {
+      -- completion = cmp.config.window.bordered(),
+      -- documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert({
+	  ['<Up>'] = cmp.mapping.select_prev_item(select_opts),
+      ['<Down>'] = cmp.mapping.select_next_item(select_opts),
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.abort(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+
+    }),
+  sources = cmp.config.sources(
+	  {
+        { name = 'nvim_lsp' },
+        { name = 'luasnip' },
+      }
+  )
+})
+
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+vim.lsp.config('lua_ls', {
+	capabilities = capabilities,
+	settings = { Lua = { diagnostics = { globals = { "vim" } } } }
+})
+vim.lsp.enable('lua_ls')
 
 local telescope = require("telescope.builtin")
 vim.keymap.set('n', '<leader>/', telescope.live_grep)
