@@ -11,6 +11,9 @@ vim.opt.relativenumber = true
 -- display signs in number column
 vim.opt.signcolumn = "number"
 
+-- change of end of buffer char
+vim.opt.fillchars = { eob = "·" }
+
 -- set up lazy package manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
