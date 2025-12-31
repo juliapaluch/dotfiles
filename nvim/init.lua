@@ -97,6 +97,8 @@ require("nvim-tree").setup({
 
 require("luasnip.loaders.from_vscode").lazy_load()
 
+require('lualine').setup()
+
 local tree = require("nvim-tree.api")
 vim.keymap.set('n', '<leader>b', tree.tree.toggle)
 
