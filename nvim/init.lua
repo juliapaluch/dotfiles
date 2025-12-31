@@ -6,6 +6,8 @@ vim.opt.tabstop = 4
 -- num spaces for one level indent
 vim.opt.shiftwidth = 4
 
+vim.opt.termguicolors = true
+
 -- for easier navigation
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -40,21 +42,26 @@ require("lazy").setup({
   spec = { { import = "plugins" },},
   defaults = { lazy = false, version = false, },
   -- use rose-pine-dawn for lazy install window
-  install = { colorscheme = { "rose-pine-dawn"} },
+  -- install = { colorscheme = { "rose-pine-dawn"} },
   checker = { enabled = true, notify = false,},
 })
 
+local adm = require("auto-dark-mode")
+
 -- switch light/dark theme based on system theme
-require("auto-dark-mode").setup({
+adm.setup({
+  update_interval = 1000,
   set_dark_mode = function()
-    vim.api.nvim_set_option_value("background", "dark", {})
-    vim.cmd("colorscheme rose-pine")
+	vim.o.background = 'dark'
+    vim.cmd("colorscheme rose-pine-main")
   end,
   set_light_mode = function()
-    vim.api.nvim_set_option_value("background", "light", {})
+	vim.o.background = 'light'
     vim.cmd("colorscheme rose-pine-dawn")
   end,
 })
+
+adm.init()
 
 local cmp = require("cmp")
 cmp.setup({
