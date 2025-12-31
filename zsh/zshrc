@@ -27,3 +27,5 @@ export PATH=$HOME/go/bin:$PATH
 export PATH=$PATH:$HOME/tools
 
 export TERM=tmux-256color
+
+fastfetch

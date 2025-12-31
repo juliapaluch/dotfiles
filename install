@@ -15,6 +15,7 @@ check_install git
 check_install nvim
 check_install tmux
 check_install atuin
+check_install fastfetch
 
 # oh-my-zsh
 if [ ! -d ~/.oh-my-zsh ]; then
