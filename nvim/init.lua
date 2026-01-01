@@ -6,8 +6,6 @@ vim.opt.tabstop = 4
 -- num spaces for one level indent
 vim.opt.shiftwidth = 4
 
-vim.opt.termguicolors = true
-
 -- for easier navigation
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -41,15 +39,11 @@ vim.g.mapleader = " "
 require("lazy").setup({
   spec = { { import = "plugins" },},
   defaults = { lazy = false, version = false, },
-  -- use rose-pine-dawn for lazy install window
-  -- install = { colorscheme = { "rose-pine-dawn"} },
   checker = { enabled = true, notify = false,},
 })
 
-local adm = require("auto-dark-mode")
-
 -- switch light/dark theme based on system theme
-adm.setup({
+require("auto-dark-mode").setup({
   update_interval = 1000,
   set_dark_mode = function()
 	vim.o.background = 'dark'
@@ -60,8 +54,6 @@ adm.setup({
     vim.cmd("colorscheme rose-pine-dawn")
   end,
 })
-
-adm.init()
 
 local cmp = require("cmp")
 cmp.setup({
@@ -86,12 +78,30 @@ cmp.setup({
   )
 })
 
+require("luasnip.loaders.from_vscode").lazy_load()
+
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 vim.lsp.config('lua_ls', {
 	capabilities = capabilities,
 	settings = { Lua = { diagnostics = { globals = { "vim" } } } }
 })
 vim.lsp.enable('lua_ls')
+
+vim.lsp.config('clangd', {
+	capabilities = capabilities,
+})
+vim.lsp.enable('clangd')
+
+require("nvim-treesitter").setup({
+  ensure_installed = { "cpp", "lua" }
+})
+
+vim.diagnostic.config({
+  float = {
+    border = "rounded",
+  },
+  underline = true,
+})
 
 local telescope = require("telescope.builtin")
 vim.keymap.set('n', '<leader>/', telescope.live_grep)
@@ -113,3 +123,8 @@ vim.keymap.set('n', '<leader>h', '<C-w>h', { desc = "Move pane focus left" } )
 vim.keymap.set('n', '<leader>k', '<C-w>k', { desc = "Move pane focus up" } )
 vim.keymap.set('n', '<leader>j', '<C-w>j', { desc = "Move pane focus down" } )
 
+
+-- show diagnostic window
+vim.keymap.set("n", "<leader>d", function()
+    vim.diagnostic.open_float()
+end, { desc = "Show diagnostics for current line" })

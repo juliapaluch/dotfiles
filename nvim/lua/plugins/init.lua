@@ -16,7 +16,11 @@ return {
     },
 	{
 	  "L3MON4D3/LuaSnip",
-	  dependencies = { "rafamadriz/friendly-snippets" },
+	  dependencies = {
+		  "rafamadriz/friendly-snippets",
+	  },
+	  version = "v2.4",
+	  build = "make install_jsregexp"
 	},
 	{"OXY2DEV/markview.nvim", lazy = false},
 	{"nvim-treesitter/nvim-treesitter", branch = 'master', lazy = false, build = ":TSUpdate"},
