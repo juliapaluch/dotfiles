@@ -116,6 +116,8 @@ require("nvim-tree").setup({
 
 local tree = require("nvim-tree.api")
 vim.keymap.set('n', '<leader>b', tree.tree.toggle)
+vim.keymap.set('n', '<leader>tf', tree.tree.find_file)
+
 
 -- easily navigate split panes
 vim.keymap.set('n', '<leader>l', '<C-w>l', { desc = "Move pane focus right" } )
