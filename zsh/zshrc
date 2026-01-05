@@ -6,7 +6,10 @@ fi
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-ZSH_THEME="refined"
+export VISUAL=nvim
+export EDITOR=nvim
+
+ZSH_THEME="kphoen"
 HYPHEN_INSENSITIVE="true"
 
 plugins=(git)
@@ -28,4 +31,13 @@ export PATH=$PATH:$HOME/tools
 
 export TERM=tmux-256color
 
+# go
+export PATH="$PATH:/Users/julia/go/bin"
+
+# rust
+. "$HOME/.cargo/env"
+
+alias ls='eza --color=always --group-directories-first --icons --oneline'
+
+cd $HOME
 fastfetch
