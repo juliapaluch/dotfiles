@@ -16,6 +16,24 @@ vim.opt.signcolumn = "number"
 -- change of end of buffer char
 vim.opt.fillchars = { eob = "·" }
 
+-- vim should auto relaod the file if it detects that a change has been made externally
+-- https://unix.stackexchange.com/a/383044
+-- https://github.com/stevearc/dotfiles/blob/master/.config/nvim/init.lua#L291-L302
+vim.o.autoread = true
+vim.api.nvim_create_autocmd("FocusGained", {
+  desc = "Reload files from disk when we focus vim",
+  pattern = "*",
+  command = "if getcmdwintype() == '' | checktime | endif",
+  group = aug,
+})
+vim.api.nvim_create_autocmd("BufEnter", {
+  desc = "Every time we enter an unmodified buffer, check if it changed on disk",
+  pattern = "*",
+  command = "if &buftype == '' && !&modified && expand('%') != '' | exec 'checktime ' . expand('<abuf>') | endif",
+  group = aug,
+})
+
+
 -- set up lazy package manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
