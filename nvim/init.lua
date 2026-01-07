@@ -1,4 +1,4 @@
-require('statusline')
+require("statusline")
 
 -- how many columns a tab char takes up
 vim.opt.tabstop = 4
@@ -23,33 +23,32 @@ local aug = vim.api.nvim_create_augroup("config", {})
 -- https://github.com/stevearc/dotfiles/blob/master/.config/nvim/init.lua#L291-L302
 vim.o.autoread = true
 vim.api.nvim_create_autocmd("FocusGained", {
-  desc = "Reload files from disk when we focus vim",
-  pattern = "*",
-  command = "if getcmdwintype() == '' | checktime | endif",
-  group = aug,
+	desc = "Reload files from disk when we focus vim",
+	pattern = "*",
+	command = "if getcmdwintype() == '' | checktime | endif",
+	group = aug,
 })
 vim.api.nvim_create_autocmd("BufEnter", {
-  desc = "Every time we enter an unmodified buffer, check if it changed on disk",
-  pattern = "*",
-  command = "if &buftype == '' && !&modified && expand('%') != '' | exec 'checktime ' . expand('<abuf>') | endif",
-  group = aug,
+	desc = "Every time we enter an unmodified buffer, check if it changed on disk",
+	pattern = "*",
+	command = "if &buftype == '' && !&modified && expand('%') != '' | exec 'checktime ' . expand('<abuf>') | endif",
+	group = aug,
 })
-
 
 -- set up lazy package manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-  if vim.v.shell_error ~= 0 then
-   vim.api.nvim_echo({
-      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
-      { "\nPress any key to exit..." },
-    }, true, {})
-    vim.fn.getchar()
-    os.exit(1)
-  end
+	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+	local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+	if vim.v.shell_error ~= 0 then
+		vim.api.nvim_echo({
+			{ "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+			{ out, "WarningMsg" },
+			{ "\nPress any key to exit..." },
+		}, true, {})
+		vim.fn.getchar()
+		os.exit(1)
+	end
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -57,118 +56,120 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 
 require("lazy").setup({
-  spec = { { import = "plugins" },},
-  defaults = { lazy = false, version = false, },
-  checker = { enabled = true, notify = false,},
+	spec = { { import = "plugins" } },
+	defaults = { lazy = false, version = false },
+	checker = { enabled = true, notify = false },
 })
 
 -- switch light/dark theme based on system theme
 require("auto-dark-mode").setup({
-  update_interval = 1000,
-  set_dark_mode = function()
-	vim.o.background = 'dark'
-    vim.cmd("colorscheme rose-pine-main")
-  end,
-  set_light_mode = function()
-	vim.o.background = 'light'
-    vim.cmd("colorscheme rose-pine-dawn")
-  end,
+	update_interval = 1000,
+	set_dark_mode = function()
+		vim.o.background = "dark"
+		vim.cmd("colorscheme rose-pine-main")
+	end,
+	set_light_mode = function()
+		vim.o.background = "light"
+		vim.cmd("colorscheme rose-pine-dawn")
+	end,
 })
 
 local cmp = require("cmp")
 cmp.setup({
-  snippet = {
-    expand = function(args)
-		require('luasnip').lsp_expand(args.body)
-	end,
-  },
-  window = {
-      completion = cmp.config.window.bordered(),
-      documentation = cmp.config.window.bordered(),
-  },
-  mapping = cmp.mapping.preset.insert({
-      ['<C-Space>'] = cmp.mapping.complete(),
-      ['q'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    }),
-  sources = cmp.config.sources(
-	  {
-        { name = 'nvim_lsp' },
-      },
-	  {
-		{ name = 'buffer' },
-	  }
-  )
+	snippet = {
+		expand = function(args)
+			require("luasnip").lsp_expand(args.body)
+		end,
+	},
+	window = {
+		completion = cmp.config.window.bordered(),
+		documentation = cmp.config.window.bordered(),
+	},
+	mapping = cmp.mapping.preset.insert({
+		["<C-Space>"] = cmp.mapping.complete(),
+		["q"] = cmp.mapping.abort(),
+		["<CR>"] = cmp.mapping.confirm({ select = true }),
+	}),
+	sources = cmp.config.sources({
+		{ name = "nvim_lsp" },
+	}, {
+		{ name = "buffer" },
+	}),
 })
 
 require("luasnip.loaders.from_vscode").lazy_load()
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-vim.lsp.config('lua_ls', {
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+vim.lsp.config("lua_ls", {
 	capabilities = capabilities,
-	settings = { Lua = { diagnostics = { globals = { "vim" } } } }
+	settings = { Lua = { diagnostics = { globals = { "vim" } } } },
 })
-vim.lsp.enable('lua_ls')
+vim.lsp.enable("lua_ls")
 
-vim.lsp.config('clangd', {
+vim.lsp.config("clangd", {
 	capabilities = capabilities,
 })
-vim.lsp.enable('clangd')
+vim.lsp.enable("clangd")
 
-vim.lsp.config('gopls', {
+vim.lsp.config("gopls", {
 	capabilities = capabilities,
 })
-vim.lsp.enable('gopls')
+vim.lsp.enable("gopls")
 
 vim.api.nvim_create_augroup("AutoFormat", {})
 
-vim.api.nvim_create_autocmd(
-	"BufWritePost",
-	{
-		pattern = "*.go",
-		group = "AutoFormat",
-		callback = function()
-			vim.cmd("silent !gofmt -w %")
-			vim.cmd("edit")
-		end,
-	}
-)
+-- go autoformat
+vim.api.nvim_create_autocmd("BufWritePost", {
+	pattern = "*.go",
+	group = "AutoFormat",
+	callback = function()
+		vim.cmd("silent !gofmt -w %")
+		vim.cmd("edit")
+	end,
+})
+
+vim.api.nvim_create_autocmd("BufWritePost", {
+	pattern = "*.lua",
+	group = "AutoFormat",
+	callback = function()
+		vim.cmd("silent !stylua %")
+		vim.cmd("edit")
+	end,
+})
 
 require("nvim-treesitter").setup({
-  ensure_installed = { "cpp", "lua" }
+	ensure_installed = { "cpp", "lua" },
 })
 
 vim.diagnostic.config({
-  float = {
-    border = "rounded",
-  },
-  underline = true,
+	float = {
+		border = "rounded",
+	},
+	underline = true,
 })
 
 local telescope = require("telescope.builtin")
-vim.keymap.set('n', '<leader>/', telescope.live_grep)
-vim.keymap.set('n', '<leader>ff', telescope.find_files)
+vim.keymap.set("n", "<leader>/", telescope.live_grep)
+vim.keymap.set("n", "<leader>ff", telescope.find_files)
 
 require("nvim-tree").setup({
-  view = {
-	-- sidebar should automatically fit width to visible file names
-	adaptive_size = true,
-  },
+	view = {
+		-- sidebar should automatically fit width to visible file names
+		adaptive_size = true,
+	},
 })
 
 local tree = require("nvim-tree.api")
-vim.keymap.set('n', '<leader>b', tree.tree.toggle)
-vim.keymap.set('n', '<leader>tf', tree.tree.find_file)
-
+vim.keymap.set("n", "<leader>b", tree.tree.toggle)
+vim.keymap.set("n", "<leader>tf", tree.tree.find_file)
 
 -- easily navigate split panes
-vim.keymap.set('n', '<leader>l', '<C-w>l', { desc = "Move pane focus right" } )
-vim.keymap.set('n', '<leader>h', '<C-w>h', { desc = "Move pane focus left" } )
-vim.keymap.set('n', '<leader>k', '<C-w>k', { desc = "Move pane focus up" } )
-vim.keymap.set('n', '<leader>j', '<C-w>j', { desc = "Move pane focus down" } )
-
+vim.keymap.set("n", "<leader>l", "<C-w>l", { desc = "Move pane focus right" })
+vim.keymap.set("n", "<leader>h", "<C-w>h", { desc = "Move pane focus left" })
+vim.keymap.set("n", "<leader>k", "<C-w>k", { desc = "Move pane focus up" })
+vim.keymap.set("n", "<leader>j", "<C-w>j", { desc = "Move pane focus down" })
 
 -- show diagnostic window
 vim.keymap.set("n", "<leader>d", function()
-    vim.diagnostic.open_float()
+	vim.diagnostic.open_float()
 end, { desc = "Show diagnostics for current line" })
