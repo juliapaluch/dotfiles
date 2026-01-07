@@ -16,6 +16,8 @@ vim.opt.signcolumn = "number"
 -- change of end of buffer char
 vim.opt.fillchars = { eob = "·" }
 
+local aug = vim.api.nvim_create_augroup("config", {})
+
 -- vim should auto relaod the file if it detects that a change has been made externally
 -- https://unix.stackexchange.com/a/383044
 -- https://github.com/stevearc/dotfiles/blob/master/.config/nvim/init.lua#L291-L302
