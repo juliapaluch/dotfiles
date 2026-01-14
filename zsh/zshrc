@@ -40,4 +40,3 @@ export PATH="$PATH:/Users/julia/go/bin"
 alias ls='eza --color=always --group-directories-first --icons --oneline'
 
 cd $HOME
-fastfetch
