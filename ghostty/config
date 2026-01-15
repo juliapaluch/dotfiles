@@ -1,0 +1,6 @@
+theme = dark:Rose Pine,light:Rose Pine Dawn
+macos-titlebar-proxy-icon = hidden
+title = " "
+font-family = "IosevkaTerm Nerd Font"
+font-size = 18
+macos-non-native-fullscreen=false
