@@ -1,0 +1,8 @@
+[alias]
+	ap = add --patch
+        sc = switch -c
+        chk = checkout
+        s = status
+        cm = commit -m
+	ds = diff --staged
+
