@@ -59,7 +59,7 @@ else
 fi
 
 # add git aliases if none already defined
-if ! grep -q "[alias]" ~/.gitconfig; then
+if ! grep -q "\[alias\]" ~/.gitconfig; then
 	cat ${PWD}/git/.gitconfig >> ~/.gitconfig
 else
 	echo "git aliases already defined. skipping..."
