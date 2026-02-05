@@ -116,6 +116,11 @@ vim.lsp.config("gopls", {
 })
 vim.lsp.enable("gopls")
 
+vim.lsp.config("pyright", {
+	capabilities = capabilities,
+})
+vim.lsp.enable("pyright")
+
 vim.api.nvim_create_augroup("AutoFormat", {})
 
 -- go autoformat
