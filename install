@@ -35,6 +35,7 @@ fi
 
 # neovim
 if [ ! -d ~/.config/nvim ]; then
+	echo "linking neovim config..."
 	ln -s ${PWD}/nvim ~/.config/nvim
 else
 	echo "neovim config already exists. skipping..."
@@ -42,6 +43,7 @@ fi
 
 # tmux
 if [ ! -d ~/.tmux/plugins/tpm ]; then
+	echo "getting tpm from git..."
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
 if [ ! -d ~/.config/tmux ]; then
@@ -55,13 +57,23 @@ fi
 
 # ghostty
 if [ ! -d ~/.config/ghostty ]; then
+	echo "linking ghostty config..."
 	ln -s ${PWD}/ghostty ~/.config/ghostty
 else
 	echo "ghostty config already exists. skipping..."
 fi
 
+# atuin
+if [ ! -d ~/.config/atuin/config.toml ]; then
+	echo "linking atuin config..."
+	ln -sf ${PWD}/atuin/config.toml ~/.config/atuin/config.toml
+else
+	echo "atuin config already exists. skipping..."
+fi
+
 # add git aliases if none already defined
 if ! grep -q "\[alias\]" ~/.gitconfig; then
+	echo "appending git aliases to git config..."
 	cat ${PWD}/git/.gitconfig >> ~/.gitconfig
 else
 	echo "git aliases already defined. skipping..."
