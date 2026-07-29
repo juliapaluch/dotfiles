@@ -4,3 +4,4 @@ title = " "
 font-family = "IosevkaTerm Nerd Font"
 font-size = 18
 macos-non-native-fullscreen=false
+cursor-style = bar
