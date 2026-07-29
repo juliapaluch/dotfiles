@@ -1,0 +1,7 @@
+enter_accept = true
+
+[sync]
+records = true
+
+[tmux]
+enabled = true

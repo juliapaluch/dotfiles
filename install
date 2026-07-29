@@ -27,6 +27,7 @@ fi
 
 # zsh
 if [ ! -f ~/.zshrc ]; then
+	echo "linking zshrc..."
 	ln -s ${PWD}/zsh/zshrc ~/.zshrc
 else
 	echo "zshrc already exists. skipping..."
